@@ -1,0 +1,29 @@
+material GoalSign/Diffuse
+{
+  receive_shadows off
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture GoalSign_Diffuse.png
+      }
+    }
+  }
+}
+
+material GoalSign/Specular
+{
+  receive_shadows off
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture GoalSign_Spec.png
+      }
+    }
+  }
+}

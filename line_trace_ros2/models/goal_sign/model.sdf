@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<sdf version="1.5">
+  <model name="Goal Sign">
+    <static>true</static>
+    <link name="link">
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://goal_sign/meshes/goal_sign.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://goal_sign/meshes/goal_sign.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://goal_sign/materials/scripts</uri>
+            <uri>model://goal_sign/materials/textures</uri>
+            <name>GoalSign/Diffuse</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

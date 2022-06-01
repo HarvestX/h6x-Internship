@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="harvestx_cube">
+    <pose>0 0 0.4 0 0 0</pose>
+    <static>true</static>
+    <link name="link">
+      <visual name="visual">
+        <geometry>
+          <mesh>
+            <uri>model://harvestx_cube/meshes/number.dae</uri>
+          </mesh>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://harvestx_cube/materials/scripts</uri>
+            <uri>model://harvestx_cube/materials/textures</uri>
+            <name>HarvestxCube</name>
+          </script>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>

@@ -1,0 +1,15 @@
+material LineFlooringTexture
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        // Relative to the location of the material script
+        texture line_floor2.png
+        scale 1.0 1.0
+      }
+    }
+  }
+}

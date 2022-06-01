@@ -1,0 +1,13 @@
+material HarvestxCube
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture harvestx_cube.png
+      }
+    }
+  }
+}
