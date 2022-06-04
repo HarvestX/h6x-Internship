@@ -1,0 +1,13 @@
+material LineRobot2
+{
+  technique
+  {
+    pass
+    {
+      texture_unit
+      {
+        texture car.png
+      }
+    }
+  }
+}
