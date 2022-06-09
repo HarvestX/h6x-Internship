@@ -207,7 +207,7 @@
           </noise>
         </camera>
         <!-- <plugin
-            name="line_trace_ros2"
+            name="h6x_internship_gazebo"
             filename="libline_sensor_plugin.so"></plugin> -->
       </sensor>
     </link>

@@ -10,7 +10,7 @@ def generate_launch_description():
     pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
     world = os.path.join(
-        get_package_share_directory('line_trace_ros2'),
+        get_package_share_directory('h6x_internship_gazebo'),
         'worlds',
         'env_line_room.world'
     )
