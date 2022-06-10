@@ -24,5 +24,5 @@ if(BUILD_TESTING)
   ament_lint_auto_find_test_dependencies()
 endif()
 
-install(DIRECTORY launch models worlds DESTINATION share/${PROJECT_NAME}/)
+install(DIRECTORY launch models worlds rviz DESTINATION share/${PROJECT_NAME}/)
 ament_auto_package()
