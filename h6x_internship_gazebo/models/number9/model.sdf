@@ -2,7 +2,7 @@
 <sdf version="1.6">
   <model name="number9">
     <pose>0 0 0.4 0 0 0</pose>
-    <static>true</static>
+    <static>false</static>
     <link name="link">
       <visual name="visual">
         <geometry>
@@ -18,6 +18,13 @@
           </script>
         </material>
       </visual>
+      <collision name="collision">
+        <geometry>
+          <mesh>
+            <uri>model://harvestx_cube/meshes/number.dae</uri>
+          </mesh>
+        </geometry>
+      </collision>
     </link>
   </model>
 </sdf>

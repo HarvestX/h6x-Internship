@@ -39,8 +39,9 @@
                 </material>
             </visual>
         </link>
-
+        <!-- lidar_link -->
         <link name="lidar_link">
+            <!-- <pose>0.215 0 -0.03 0 0 3.1415</pose> -->
             <pose>0.215 0 -0.03 0 0 0</pose>
             <inertial>
                 <mass>0.1</mass>
@@ -70,7 +71,7 @@
             <material>
                 <script>
                     <uri>file://media/materials/scripts/gazebo.material</uri>
-                    <name>Gazebo/Orange</name>
+                    <name>Gazebo/Red</name>
                 </script>
             </material>
             <!-- ray sensor -->
@@ -78,25 +79,25 @@
                 <ray>
                     <scan>
                         <horizontal>
-                            <samples>300</samples>
+                            <samples>50</samples>
                             <resolution>1.0</resolution>
                             <min_angle>-0.5236</min_angle>
                             <max_angle>0.5236</max_angle>
                         </horizontal>
-                        <vertical>
+                        <!-- <vertical>
                             <samples>100</samples>
                             <resolution>1.0</resolution>
                             <min_angle>-0.5236</min_angle>
                             <max_angle>0.5236</max_angle>
-                        </vertical>
+                        </vertical> -->
                     </scan>
                     <range>
                         <min>0.05</min>
-                        <max>50.0</max>
+                        <max>30.0</max>
                     </range>
+                    <update_rate>0.01</update_rate>
                 </ray>
                 <always_on>true</always_on>
-                <update_rate>1.0</update_rate>
                 <plugin name="laserscan" filename="libgazebo_ros_ray_sensor.so">
                     <ros>
                         <namespace>/ray</namespace>
@@ -104,12 +105,80 @@
                     </ros>
                     <output_type>sensor_msgs/LaserScan</output_type>
                 </plugin>
-                <plugin name="range" filename="libgazebo_ros_ray_sensor.so">
+                <!-- <plugin name="range" filename="libgazebo_ros_ray_sensor.so">
                     <ros>
                         <namespace>/ray</namespace>
                         <remapping>~/out:=range</remapping>
                     </ros>
                     <output_type>sensor_msgs/Range</output_type>
+                </plugin> -->
+            </sensor>
+        </link>
+        <!-- end lidar -->
+
+        <!-- camera(World) -->
+        <link name="world_camera_link">
+            <pose>0.2 0 5 0 1.5707 0</pose>
+            <inertial>
+                <mass>0.001</mass>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.01 0.01 0.01</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.01 0.01 0.01</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Blue</name>
+                    </script>
+                </material>
+            </visual>
+
+            <sensor type="camera" name="camera_world">
+                <pose>-0.2 0 0 0 0 0</pose>
+                <update_rate>10.0</update_rate>
+                <always_on>true</always_on>
+                <visualize>false</visualize>
+                <camera name="head">
+                    <horizontal_fov>0.64</horizontal_fov>
+                    <image>
+                        <width>720</width>
+                        <height>480</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.221</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>demo_cam</namespace>
+                        <remapping>image_raw:=image_demo</remapping>
+                        <remapping>camera_info:=camera_info_demo</remapping>
+                    </ros>
                 </plugin>
             </sensor>
         </link>
@@ -328,9 +397,19 @@
             </axis>
         </joint>
 
-        <joint name='lidar_join' type='fixed'>
+        <joint name='lidar_joint' type='fixed'>
             <parent>body_link</parent>
             <child>lidar_link</child>
+            <pose>0 0 0 0 0 0</pose>
+            <axis>
+                <use_parent_model_frame>true</use_parent_model_frame>
+                <xyz>0 1 0</xyz>
+            </axis>
+        </joint>
+
+        <joint name='world_camera_joint' type='fixed'>
+            <parent>body_link</parent>
+            <child>world_camera_link</child>
             <pose>0 0 0 0 0 0</pose>
             <axis>
                 <use_parent_model_frame>true</use_parent_model_frame>
@@ -357,6 +436,16 @@
             <robot_base_frame>chassis</robot_base_frame>
         </plugin>
         <!-- line-robot -->
+        <plugin name="libgazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
+            <ros>
+                <namespace>p3d</namespace>
+                <remapping>odom:=odom</remapping>
+            </ros>
+            <frame_name>lidar_link</frame_name>
+            <body_name>body_link</body_name>
+            <update_rate>200.0</update_rate>
+            <gaussian_noise>0.01</gaussian_noise>
+        </plugin>
 
     </model>
 </sdf>

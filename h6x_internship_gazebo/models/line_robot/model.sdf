@@ -207,7 +207,7 @@
           </noise>
         </camera>
         <!-- <plugin
-            name="h6x_internship_gazebo"
+            name="h6x_internship_gazsebo"
             filename="libline_sensor_plugin.so"></plugin> -->
       </sensor>
     </link>
