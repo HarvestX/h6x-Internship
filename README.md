@@ -14,6 +14,6 @@ git clone https://github.com/HarvestX/h6x-Internship.git
 cd ~/ros2_ws
 colcon build --symlink-install
 
-ros2 launch line_trace_ros2 linetrace.launch.py
+ros2 launch h6x_internship_gazebo world.launch.py
 ```
 
