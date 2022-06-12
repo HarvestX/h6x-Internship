@@ -1,0 +1,5 @@
+repositories:
+  h6x_detection_interfaces:
+    type: git
+    url: https://github.com/Kotakku/sample_rviz_plugins.git
+    version: main

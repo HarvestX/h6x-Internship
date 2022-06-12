@@ -2,7 +2,8 @@
 <sdf version="1.6">
     <model name="line_robot2">
         <pose>0 0 0.08 0 0 0</pose>
-        <!-- <static>true</static> -->
+
+        <!-- body -->
         <link name="body_link">
             <pose>0 0 0 0 0 0</pose>
             <inertial>
@@ -39,6 +40,8 @@
                 </material>
             </visual>
         </link>
+
+        <!-- Sensors -->
         <!-- lidar_link -->
         <link name="lidar_link">
             <!-- <pose>0.215 0 -0.03 0 0 3.1415</pose> -->
@@ -74,6 +77,7 @@
                     <name>Gazebo/Red</name>
                 </script>
             </material>
+
             <!-- ray sensor -->
             <sensor name="sensor_ray" type="ray">
                 <ray>
@@ -116,7 +120,7 @@
         </link>
         <!-- end lidar -->
 
-        <!-- camera(World) -->
+        <!-- camera (World) -->
         <link name="world_camera_link">
             <pose>0.2 0 5 0 1.5707 0</pose>
             <inertial>
@@ -176,13 +180,80 @@
                 <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
                     <ros>
                         <namespace>demo_cam</namespace>
-                        <remapping>image_raw:=image_demo</remapping>
-                        <remapping>camera_info:=camera_info_demo</remapping>
+                        <remapping>image_raw:=image</remapping>
+                        <remapping>camera_info:=camera_info</remapping>
                     </ros>
                 </plugin>
             </sensor>
         </link>
 
+        <!-- front camera -->
+        <!-- <link name="camera_front"> -->
+        <link name="camera_front_link">
+            <pose>0.19 0 0.03 0 0 0</pose>
+            <inertial>
+                <mass>0.001</mass>
+                <inertia>
+                    <ixx>0.01</ixx>
+                    <ixy>0.0</ixy>
+                    <ixz>0.0</ixz>
+                    <iyy>0.01</iyy>
+                    <iyz>0.0</iyz>
+                    <izz>0.01</izz>
+                </inertia>
+            </inertial>
+            <collision name="collision">
+                <geometry>
+                    <box>
+                        <size>0.01 0.01 0.01</size>
+                    </box>
+                </geometry>
+            </collision>
+            <visual name="visual">
+                <geometry>
+                    <box>
+                        <size>0.01 0.01 0.01</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>file://media/materials/scripts/gazebo.material</uri>
+                        <name>Gazebo/Black</name>
+                    </script>
+                </material>
+            </visual>
+
+            <sensor type="camera" name="camera_front">
+                <pose>-0.2 0 0 0 0 0</pose>
+                <update_rate>10.0</update_rate>
+                <always_on>true</always_on>
+                <visualize>false</visualize>
+                <camera name="head">
+                    <horizontal_fov>0.64</horizontal_fov>
+                    <image>
+                        <width>640</width>
+                        <height>360</height>
+                        <format>R8G8B8</format>
+                    </image>
+                    <clip>
+                        <near>0.221</near>
+                        <far>300</far>
+                    </clip>
+                    <noise>
+                        <type>gaussian</type>
+                        <mean>0.0</mean>
+                        <stddev>0.007</stddev>
+                    </noise>
+                </camera>
+                <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>camera_front</namespace>
+                        <remapping>image_raw:=image</remapping>
+                        <remapping>camera_info:=camera_info</remapping>
+                    </ros>
+                </plugin>
+            </sensor>
+        </link>
 
         <link name="left_wheel_link">
             <pose>0 0.11 -0.03 1.5707 0 0</pose>
@@ -351,6 +422,13 @@
                         <stddev>0.007</stddev>
                     </noise>
                 </camera>
+                <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+                    <ros>
+                        <namespace>camera_linetrace</namespace>
+                        <remapping>image_raw:=image</remapping>
+                        <remapping>camera_info:=camera_info</remapping>
+                    </ros>
+                </plugin>
                 <!-- <plugin
               name="h6x_internship_gazsebo"
               filename="libline_sensor_plugin.so"></plugin> -->
@@ -407,9 +485,20 @@
             </axis>
         </joint>
 
+        <!-- camera joint -->
         <joint name='world_camera_joint' type='fixed'>
             <parent>body_link</parent>
             <child>world_camera_link</child>
+            <pose>0 0 0 0 0 0</pose>
+            <axis>
+                <use_parent_model_frame>true</use_parent_model_frame>
+                <xyz>0 1 0</xyz>
+            </axis>
+        </joint>
+
+        <joint name='camera_front_joint' type='fixed'>
+            <parent>body_link</parent>
+            <child>camera_front_link</child>
             <pose>0 0 0 0 0 0</pose>
             <axis>
                 <use_parent_model_frame>true</use_parent_model_frame>
@@ -432,7 +521,7 @@
             <publish_odom_tf>true</publish_odom_tf>
             <publish_wheel_tf>true</publish_wheel_tf>
 
-            <odometry_frame>odom_demo</odometry_frame>
+            <odometry_frame>odom</odometry_frame>
             <robot_base_frame>chassis</robot_base_frame>
         </plugin>
         <!-- line-robot -->

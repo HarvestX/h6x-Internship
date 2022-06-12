@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<sdf version="1.6">
+  <model name="ray_point">
+    <static>true</static>
+    <pose>0 0 0.005 0 -1.57075 0</pose>
+    <link name="ray_link">
+      <visual name="visual_box">
+        <geometry>
+          <box>
+            <size>0.01 0.01 0.01</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>file://media/materials/scripts/gazebo.material</uri>
+            <name>Gazebo/Gray</name>
+          </script>
+        </material>
+      </visual>
+
+      <!-- ray sensor -->
+      <sensor name="sensor_ray" type="ray">
+        <ray>
+          <range>
+            <min>0.05</min>
+            <max>50.0</max>
+          </range>
+        </ray>
+        <always_on>true</always_on>
+        <update_rate>1.0</update_rate>
+        <plugin name="range" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>/raypoint</namespace>
+            <remapping>~/out:=range</remapping>
+          </ros>
+          <output_type>sensor_msgs/Range</output_type>
+        </plugin>
+      </sensor>
+
+    </link>
+  </model>
+</sdf>

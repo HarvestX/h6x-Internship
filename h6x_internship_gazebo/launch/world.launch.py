@@ -43,9 +43,32 @@ def generate_launch_description():
         arguments=['-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
     )
 
+    judge_courceout = Node(
+        package='h6x_internship_gazebo',
+        executable='judge_courceout',
+        name='judge_courceout'
+    )
+
+    judge_goal = Node(
+        package='h6x_internship_gazebo',
+        executable='judge_goal',
+        name='judge_goal'
+    )
+
+
+    send_log = Node(
+        package='h6x_internship_gazebo',
+        executable='send_log',
+        name='send_log'
+    )
+
     return LaunchDescription([
         gzserver_cmd,
         # gzclient_cmd,
         joint_state_publisher_node,
-        rviz
+        rviz,
+
+        judge_courceout,
+        judge_goal,
+        send_log
     ])
