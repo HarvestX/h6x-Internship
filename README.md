@@ -12,6 +12,7 @@ source /opt/ros/galactic/setup.bash
 cd ~/ros2_ws/src
 git clone https://github.com/HarvestX/h6x-Internship.git
 cd ~/ros2_ws
+vcs import src/ < rvizplugin.repos
 colcon build --symlink-install
 
 ros2 launch h6x_internship_gazebo world.launch.py
