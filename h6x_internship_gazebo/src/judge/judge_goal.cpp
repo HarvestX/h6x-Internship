@@ -9,7 +9,7 @@ class JudgeGoal : public rclcpp::Node
 {
 public:
     JudgeGoal()
-        : Node("judge_courseout")
+        : Node("judge_goal")
     {
         // rmw_qos_profile_t qos_sensor = rmw_qos_profile_sensor_data;
         this->sub_range_ = this->create_subscription<sensor_msgs::msg::Range>("/raypoint/range", rclcpp::SensorDataQoS(), std::bind(&JudgeGoal::range_callback, this, std::placeholders::_1));
