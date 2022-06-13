@@ -1,111 +1,174 @@
-#include <rclcpp/rclcpp.hpp>
-#include <rcl_interfaces/msg/log.hpp>
-#include <std_msgs/msg/bool.hpp>
+#include "send_log.hpp"
 
-#define DEBUG 10
-#define INFO 20
-#define WARN 30
-#define ERROR 40
-#define FATAL 50
-
-class SendLog : public rclcpp::Node
+SendLog::SendLog() : Node("send_log")
 {
-public:
-    SendLog()
-        : Node("send_log")
-    {
-        count_ = 0;
-        courseout_init_flag = true;
-        goal_flag_ = false;
+    count_ = 0;
+    score_ = 0;
+    past_time_ = 0;
+    couseout_count_ = 0;
 
-        sub_courseout_ = this->create_subscription<std_msgs::msg::Bool>("/judge_courseout/data", 10, std::bind(&SendLog::line_courseout_callback, this, std::placeholders::_1));
-        sub_goal_ = this->create_subscription<std_msgs::msg::Bool>("/judge_goal/data", 10, std::bind(&SendLog::line_goal_callback, this, std::placeholders::_1));
-        pub_log_ = this->create_publisher<rcl_interfaces::msg::Log>("/log", 10);
+    started_ = false;
+    goal_flag_ = false;
+    gameover_was_sent_ = false;
+
+    sub_courseout_ = this->create_subscription<std_msgs::msg::Bool>("/judge_courseout/data", 10, std::bind(&SendLog::line_courseout_callback, this, std::placeholders::_1));
+    sub_goal_ = this->create_subscription<std_msgs::msg::Bool>("/judge_goal/data", 10, std::bind(&SendLog::line_goal_callback, this, std::placeholders::_1));
+
+    pub_log_ = this->create_publisher<rcl_interfaces::msg::Log>("/log", 10);
+    pub_score_ = this->create_publisher<std_msgs::msg::Int32>("/score", 10);
+    pub_time_ = this->create_publisher<std_msgs::msg::Int32>("/time", 10);
+    pub_speed_limit_ = this->create_publisher<std_msgs::msg::Float32>("/speed_limit", 10);
+    timer_ = this->create_wall_timer(std::chrono::seconds(1), std::bind(&SendLog::time_update_callback, this));
+}
+
+void SendLog::line_courseout_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+{
+    rcl_interfaces::msg::Log _log;
+
+    if (goal_flag_)
+    {
+        return;
     }
 
-    void line_courseout_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+    if (ptr->data) // courseout
     {
-        rcl_interfaces::msg::Log msg;
+        // not started_ : not courseout
+        if (!started_)
+            return;
 
-        if (ptr->data) // courseout
+        count_++;
+        if (count_ > 10)
         {
-            if (courseout_init_flag)
-            {
-                // courseout_init_flag = false;
-                return;
-            }
-            count_++;
-            if (count_ > 10)
-            {
-                msg.level = ERROR;
-                msg.msg = prefix_ + "courseout!";
-                pub_log_->publish(msg);
-                count_ = 0;
-            }
-        }
-        else // no courseout
-        {
-            if (count_ > 0)
-            {
-                msg.level = INFO;
-                msg.msg = prefix_ + "===========================";
-                pub_log_->publish(msg);
-                msg.msg = prefix_ + "come back to the line";
-                pub_log_->publish(msg);
-                msg.msg = prefix_ + "===========================";
-                pub_log_->publish(msg);
-            }
+            _log.level = ERROR;
+            _log.msg = prefix_ + "courseout!";
+            pub_log_->publish(_log);
             count_ = 0;
-
-            if (courseout_init_flag)
-            {
-                courseout_init_flag = false;
-                return;
-            };
-            // msg.level = INFO;
-            // msg.msg = "no courseout";
+            couseout_count_++;
         }
     }
-
-    void line_goal_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+    else // no courseout
     {
-        rcl_interfaces::msg::Log msg;
-
-        if (ptr->data) // goal
+        if (!started_)
         {
-            if (goal_flag_)
-            {
-                return;
-            }
-            goal_flag_ = true;
-            // add crawn emoji
-            prefix_ = "(GOAL) ";
+            started_ = true;
+            _log.level = INFO;
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "Start !!";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
+            return;
+        };
 
-            msg.level = INFO;
-            msg.msg = prefix_ + "goal!";
-            pub_log_->publish(msg);
+        if (count_ > 0)
+        {
+            _log.level = INFO;
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "come back to the line";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
         }
-        else // no goal
+        count_ = 0;
+    }
+}
+
+void SendLog::line_goal_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+{
+    if (goal_flag_)
+    {
+        return;
+    }
+    rcl_interfaces::msg::Log _log;
+
+    if (ptr->data) // goal
+    {
+        if (goal_flag_)
         {
-            // msg.level = INFO;
-            // msg.msg = prefix_ + "no goal";
-            // pub->publish(msg);
-            ;
+            return;
+        }
+        goal_flag_ = true;
+        // add crawn emoji
+        prefix_ = "(GOAL) ";
+
+        _log.level = INFO;
+        _log.msg = prefix_ + "goal!";
+        pub_log_->publish(_log);
+    }
+    else // no goal
+    {
+        ;
+    }
+}
+
+void SendLog::time_update_callback()
+{
+    started_ ? past_time_++ : past_time_ = 0;
+    std_msgs::msg::Int32 msg;
+    msg.data = (int)past_time_;
+    pub_time_->publish(msg);
+
+    score_update_callback();
+
+    viecle_status_callback(score_);
+}
+
+void SendLog::score_update_callback()
+{
+    if (goal_flag_)
+    {
+        return;
+    }
+    std_msgs::msg::Int32 msg;
+    score_ = past_time_ + couseout_count_ * 10;
+    msg.data = (int)score_;
+    pub_score_->publish(msg);
+}
+
+void SendLog::viecle_status_callback(const unsigned int _score)
+{
+    bool stop = false;
+    std_msgs::msg::Float32 msg;
+
+    if (goal_flag_)
+    {
+        stop = true;
+    }
+
+    if (_score > GAMEOVER_SCORE)
+    {
+        stop = true;
+        // send error log
+        if (!gameover_was_sent_)
+        {
+            rcl_interfaces::msg::Log _log;
+            _log.level = ERROR;
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "Game Over!";
+            pub_log_->publish(_log);
+            _log.msg = prefix_ + "===========================";
+            pub_log_->publish(_log);
+            gameover_was_sent_ = true;
         }
     }
 
-private:
-    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_courseout_;
-    rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_goal_;
-    rclcpp::Publisher<rcl_interfaces::msg::Log>::SharedPtr pub_log_;
-    bool courseout_init_flag;
-    bool goal_flag_;
+    // publish speed limit
+    if (stop)
+    {
+        msg.data = 0.0;
+    }
+    else
+    {
+        msg.data = SPEED_LIMIT_NORMAL;
+    }
 
-    unsigned int count_;
+    pub_speed_limit_->publish(msg);
+}
 
-    std::string prefix_;
-};
-
+// --------------------------------------------------------------------------------------------------------------------
 int main(int argc, char **argv)
 {
     rclcpp::init(argc, argv);
