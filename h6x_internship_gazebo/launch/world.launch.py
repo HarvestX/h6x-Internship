@@ -33,16 +33,17 @@ def generate_launch_description():
     )
 
     joint_state_publisher_node = Node(
-        package ='joint_state_publisher',
-        executable ='joint_state_publisher',
-        name ='joint_state_publisher'
+        package='joint_state_publisher',
+        executable='joint_state_publisher',
+        name='joint_state_publisher'
     )
 
     rviz = Node(
         package='rviz2',
         executable='rviz2',
         name='rviz2',
-        arguments=['-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
+        arguments=[
+            '-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
     )
 
     judge_courceout = Node(
@@ -57,7 +58,6 @@ def generate_launch_description():
         name='judge_goal'
     )
 
-
     game_master = Node(
         package='h6x_internship_gazebo',
         executable='game_master',
@@ -69,7 +69,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gzserver_cmd,
-        # gzclient_cmd,
+        gzclient_cmd,
         joint_state_publisher_node,
         rviz,
 
