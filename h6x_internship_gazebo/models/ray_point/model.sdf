@@ -7,13 +7,13 @@
       <visual name="visual_box">
         <geometry>
           <box>
-            <size>0.01 0.01 0.01</size>
+            <size>10.0 0.01 0.01</size>
           </box>
         </geometry>
         <material>
           <script>
             <uri>file://media/materials/scripts/gazebo.material</uri>
-            <name>Gazebo/Gray</name>
+            <name>Gazebo/Red</name>
           </script>
         </material>
       </visual>
@@ -28,12 +28,12 @@
         </ray>
         <always_on>true</always_on>
         <update_rate>1.0</update_rate>
-        <plugin name="range" filename="libgazebo_ros_ray_sensor.so">
+        <plugin name="range" filename="libgazebo_ros_target_point.so">
           <ros>
-            <namespace>/raypoint</namespace>
-            <remapping>~/out:=range</remapping>
+            <namespace>/goal</namespace>
+            <remapping>~/out:=touched</remapping>
           </ros>
-          <output_type>sensor_msgs/Range</output_type>
+          <output_type>std_msgs/Bool</output_type>
         </plugin>
       </sensor>
 

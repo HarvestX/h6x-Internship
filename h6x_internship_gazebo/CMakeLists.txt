@@ -17,11 +17,13 @@ link_directories(${gazebo_dev_LIBRARY_DIRS})
 # diff_drive_controller_plugin ======================================
 ament_auto_add_library(diff_drive_controller_plugin SHARED
                        src/diff_drive_controller_plugin.cpp)
+ament_auto_add_library(gazebo_ros_target_point SHARED
+                       src/gazebo_ros_target_point.cpp)
 # ===================================================================
 
 # executable (judge) ================================================
 ament_auto_add_executable(judge_courceout src/judge/judge_courseout.cpp)
-ament_auto_add_executable(send_log src/judge/send_log.cpp)
+ament_auto_add_executable(game_master src/judge/game_master.cpp)
 ament_auto_add_executable(judge_goal src/judge/judge_goal.cpp)
 # ===================================================================
 

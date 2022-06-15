@@ -17,10 +17,10 @@ void DiffDriveControllerPlugin::Load(gazebo::physics::ModelPtr _model, sdf::Elem
     std::bind(
       &DiffDriveControllerPlugin::OnUpdate,
       this));
-  // this->cmd_vel_sub_ = this->ros_node_->create_subscription<geometry_msgs::msg::TwistStamped>(
+
   this->cmd_vel_sub_ = this->ros_node_->create_subscription<geometry_msgs::msg::Twist>(
     "cmd_vel", 10,
-    // std::bind(&DiffDriveControllerPlugin::twistStampedCallback, this, std::placeholders::_1));
+
     std::bind(&DiffDriveControllerPlugin::twistCallback, this, std::placeholders::_1));
 
   this->sub_speedlimit_ = this->ros_node_->create_subscription<std_msgs::msg::Float32>(
@@ -71,10 +71,6 @@ void DiffDriveControllerPlugin::Reset()
 {
 }
 
-// void DiffDriveControllerPlugin::twistStampedCallback(const geometry_msgs::msg::TwistStamped & msg)
-// {
-//   this->last_cmd_vel_ = msg;
-// }
 void DiffDriveControllerPlugin::twistCallback(const geometry_msgs::msg::Twist & msg)
 {
   this->last_cmd_vel_ = msg;
@@ -82,7 +78,7 @@ void DiffDriveControllerPlugin::twistCallback(const geometry_msgs::msg::Twist & 
 
 void DiffDriveControllerPlugin::sub_speedlimit_callback(const std_msgs::msg::Float32 & msg)
 {
-  printf("set speed limit: %d\n", msg.data);
+  printf("set speed limit: %f\n", msg.data);
   this->speed_limit_ = msg.data;
 }
 

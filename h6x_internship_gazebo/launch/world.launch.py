@@ -1,5 +1,7 @@
 import os
 
+import paramiko
+
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
@@ -56,19 +58,22 @@ def generate_launch_description():
     )
 
 
-    send_log = Node(
+    game_master = Node(
         package='h6x_internship_gazebo',
-        executable='send_log',
-        name='send_log'
+        executable='game_master',
+        name='game_master',
+        parameters=[
+            {'initial_score': 500},
+        ]
     )
 
     return LaunchDescription([
         gzserver_cmd,
-        gzclient_cmd,
+        # gzclient_cmd,
         joint_state_publisher_node,
         rviz,
 
         judge_courceout,
         judge_goal,
-        send_log
+        game_master,
     ])

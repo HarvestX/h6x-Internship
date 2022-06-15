@@ -50,14 +50,11 @@ public:
 
         if (black_count < 5)
         {
-            RCLCPP_INFO(this->get_logger(), "courseout");
-
             msg_data.data = true;
             data_pub_->publish(msg_data);
         }
         else
         {
-            RCLCPP_INFO(this->get_logger(), "no courseout");
             data_pub_->publish(msg_data);
         }
     }
