@@ -188,14 +188,14 @@ void GameMaster::game_master_score()
     _log.level = ERROR;
   }
 
-  int total_score = gameover_socre_ - score_;
+  int64_t total_score = gameover_socre_ - score_;
   if (total_score < 0) {
     total_score = 0;
   }
 
   _data = " SCORE: " + std::to_string(total_score);
   if (game_status_ == GOAL) {
-    int rank = (int)(total_score * 100 / gameover_socre_);
+    int64_t rank = (int64_t)(total_score * 100 / gameover_socre_);
     std::cout << "rank: " << rank << std::endl;
     if (rank >= 80) {
       _data += " RANK: S";
