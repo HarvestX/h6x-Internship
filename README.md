@@ -3,18 +3,28 @@
 - gazebo 9+ (Tested on 11)
 - ros2-galactic
 
-## 実行方法
+<br>
+
+## ビルド
 
 
 ```bash
-mkdir -p ~/ros2_ws/src
+mkdir -p ~/ws_galactic/src
 source /opt/ros/galactic/setup.bash
-cd ~/ros2_ws/src
+cd ~/ws_galactic/src
 git clone https://github.com/HarvestX/h6x-Internship.git
-cd ~/ros2_ws
-vcs import src/ < rvizplugin.repos
+cd ../
+bash src/h6x-Internship/setup.bash
+vcs import src/ < src/h6x-Internship/rvizplugin.repos
 colcon build --symlink-install
+```
 
+<br>
+
+## 実行方法
+
+```bash
+source ~/ws_galactic/install/setup.bash
 ros2 launch h6x_internship_gazebo world.launch.py
 ```
 
