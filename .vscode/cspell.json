@@ -15,6 +15,8 @@
     "linetrace",
     "dualshock",
     "dualsense",
-    "cmdvel"
+    "cmdvel",
+    "gzserver",
+    "gzclient"
   ]
 }
