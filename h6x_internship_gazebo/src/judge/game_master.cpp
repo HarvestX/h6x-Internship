@@ -17,54 +17,58 @@
 GameMaster::GameMaster()
 : Node("game_master")
 {
-  score_ = 0;
-  past_time_ = 0;
-  charge_score_ = 0;
+  this->score_ = 0;
+  this->past_time_ = 0;
+  this->charge_score_ = 0;
 
-  game_status_ = READY;
+  this->game_status_ = READY;
 
-  tmp_courseout_count_ = 0;
-  courseout_count_ = 0;
+  this->tmp_deviation_count_ = 0;
+  this->deviation_count_ = 0;
 
-  gameover_was_sent_ = false;
+  this->game_over_was_sent_ = false;
   tmp_charge_flag_ = false;
 
-  this->declare_parameter("initial_score", GAMEOVER_SCORE);
-  gameover_socre_ = this->get_parameter("initial_score").as_int();
+  this->declare_parameter("initial_score", GAME_OVER_SCORE);
+  this->game_over_score_ = this->get_parameter("initial_score").as_int();
 
-  sub_status_ =
+  this->sub_status_ =
     this->create_subscription<std_msgs::msg::Int32>(
     "/judge_status", 10,
-    std::bind(&GameMaster::status_callback, this, std::placeholders::_1));
-  sub_courseout_count_ = this->create_subscription<std_msgs::msg::Int32>(
-    "/courseout_count", 10, std::bind(
-      &GameMaster::courseout_count_callback, this,
+    std::bind(&GameMaster::onStatus, this, std::placeholders::_1));
+  this->sub_deviation_count_ = this->create_subscription<std_msgs::msg::Int32>(
+    "/deviation_count", 10, std::bind(
+      &GameMaster::onDeviationCount, this,
       std::placeholders::_1));
 
-  pub_log_ = this->create_publisher<rcl_interfaces::msg::Log>("/log", 10);
+  this->pub_log_ = this->create_publisher<rcl_interfaces::msg::Log>("/log", 10);
 
-  pub_score_ = this->create_publisher<std_msgs::msg::Int32>("/score", 10);
-  pub_time_ = this->create_publisher<std_msgs::msg::Int32>("/time", 10);
-  pub_speed_limit_ = this->create_publisher<std_msgs::msg::Float32>("/speed_limit", 10);
-  timer_ =
+  this->pub_score_ =
+    this->create_publisher<std_msgs::msg::Int32>("/score", 10);
+  this->pub_time_ =
+    this->create_publisher<std_msgs::msg::Int32>("/time", 10);
+  this->pub_speed_limit_ =
+    this->create_publisher<std_msgs::msg::Float32>("/speed_limit", 10);
+  this->timer_ =
     this->create_wall_timer(
     std::chrono::seconds(1), std::bind(
-      &GameMaster::timer_count_update,
+      &GameMaster::timerCountUpdate,
       this));
 }
 
-void GameMaster::status_callback(const std_msgs::msg::Int32::SharedPtr ptr)
+void GameMaster::onStatus(const std_msgs::msg::Int32::SharedPtr ptr)
 {
-  game_status_ = ptr->data;
+  this->game_status_ = ptr->data;
 }
-void GameMaster::courseout_count_callback(const std_msgs::msg::Int32::SharedPtr ptr)
+void GameMaster::onDeviationCount(
+  const std_msgs::msg::Int32::SharedPtr ptr)
 {
-  courseout_count_ = ptr->data;
+  this->deviation_count_ = ptr->data;
 }
 
-void GameMaster::timer_count_update()
+void GameMaster::timerCountUpdate()
 {
-  if (game_status_ == GOAL || score_ >= gameover_socre_) {
+  if (this->game_status_ == GOAL || this->score_ >= this->game_over_score_) {
   } else if (game_status_ == START) {
     // count timer
     past_time_++;
@@ -78,44 +82,44 @@ void GameMaster::timer_count_update()
   }
 
   std_msgs::msg::Int32 msg;
-  msg.data = (int)past_time_;
+  msg.data = static_cast<int>(past_time_);
   pub_time_->publish(msg);
 
-  score_update_and_publish();
-  publish_viecle_status();
+  scoreUpdateAndPublish();
+  publishVehicleStatus();
 
   // show log
-  game_master_status();
-  game_master_score();
-  game_master_time();
+  gameMasterStatus();
+  gameMasterScore();
+  gameMasterTime();
 }
 
-void GameMaster::score_update_and_publish()
+void GameMaster::scoreUpdateAndPublish()
 {
-  if (game_status_ == GOAL || score_ >= gameover_socre_) {
+  if (this->game_status_ == GOAL || this->score_ >= this->game_over_score_) {
     return;
   }
   std_msgs::msg::Int32 msg;
-  score_ = past_time_ + courseout_count_ - charge_score_;
+  score_ = this->past_time_ + this->deviation_count_ - this->charge_score_;
 
-  msg.data = (int)score_;
+  msg.data = static_cast<int>(this->score_);
   pub_score_->publish(msg);
 }
 
-void GameMaster::publish_viecle_status()
+void GameMaster::publishVehicleStatus()
 {
   bool stop = false;
   std_msgs::msg::Float32 msg;
 
-  if (game_status_ == GOAL) {
+  if (this->game_status_ == GOAL) {
     stop = true;
   }
 
-  if (score_ > gameover_socre_) {
+  if (this->score_ > this->game_over_score_) {
     stop = true;
     // send error log
-    if (!gameover_was_sent_) {
-      gameover_was_sent_ = true;
+    if (!this->game_over_was_sent_) {
+      this->game_over_was_sent_ = true;
     }
   }
 
@@ -126,12 +130,12 @@ void GameMaster::publish_viecle_status()
     msg.data = SPEED_LIMIT_NORMAL;
   }
 
-  pub_speed_limit_->publish(msg);
+  this->pub_speed_limit_->publish(msg);
 }
 
 
 // logging --------------------------------------------------
-void GameMaster::game_master_status()
+void GameMaster::gameMasterStatus()
 {
   rcl_interfaces::msg::Log _log;
   std::string _data;
@@ -139,16 +143,16 @@ void GameMaster::game_master_status()
   _data = "===========================";
   _log.level = INFO;
   _log.msg = _data;
-  pub_log_->publish(_log);
+  this->pub_log_->publish(_log);
 
   _data.clear();
   _data = "STATUS: ";
   _log.level = INFO;
 
   // status
-  if (score_ >= gameover_socre_) {
+  if (score_ >= this->game_over_score_) {
     _log.level = ERROR;
-    _data += "GAMEOVER";
+    _data += "GAME OVER";
   } else {
     switch (game_status_) {
       case READY:
@@ -167,17 +171,17 @@ void GameMaster::game_master_status()
   }
 
   // if over line --------------------------------------------------
-  if (courseout_count_ > tmp_courseout_count_) {
+  if (this->deviation_count_ > this->tmp_deviation_count_) {
     _log.level = WARN;
-    _data += " (COUSEOUT)";
-    tmp_courseout_count_ = courseout_count_;
+    _data += " (DEVIATION)";
+    this->tmp_deviation_count_ = this->deviation_count_;
   }
 
   _log.msg = _data;
-  pub_log_->publish(_log);
+  this->pub_log_->publish(_log);
 }
 
-void GameMaster::game_master_time()
+void GameMaster::gameMasterTime()
 {
   rcl_interfaces::msg::Log _log;
   std::string _data;
@@ -185,31 +189,31 @@ void GameMaster::game_master_time()
   // time ---------------------------------------------------------------
   _log.level = INFO;
   _data.clear();
-  _data = " TIME: " + std::to_string(past_time_);
+  _data = " TIME: " + std::to_string(this->past_time_);
 
   _log.msg = _data;
-  pub_log_->publish(_log);
+  this->pub_log_->publish(_log);
 }
 
-void GameMaster::game_master_score()
+void GameMaster::gameMasterScore()
 {
   rcl_interfaces::msg::Log _log;
   std::string _data;
 
   // score ---------------------------------------------------------------
   _log.level = INFO;
-  if (score_ >= gameover_socre_) {
+  if (score_ >= this->game_over_score_) {
     _log.level = ERROR;
   }
 
-  int64_t total_score = gameover_socre_ - score_;
+  int64_t total_score = this->game_over_score_ - score_;
   if (total_score < 0) {
     total_score = 0;
   }
 
   _data = " SCORE: " + std::to_string(total_score);
   if (game_status_ == GOAL) {
-    int64_t rank = (int64_t)(total_score * 100 / gameover_socre_);
+    int64_t rank = static_cast<int64_t>(total_score * 100.0 / this->game_over_score_);
     std::cout << "rank: " << rank << std::endl;
     if (rank >= 80) {
       _data += " RANK: S";

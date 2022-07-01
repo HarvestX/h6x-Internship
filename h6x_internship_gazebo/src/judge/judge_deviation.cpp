@@ -12,20 +12,24 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "judge_courseout.hpp"
+#include "judge_deviation.hpp"
 
-JudgeCourseout::JudgeCourseout()
-: Node("judge_courseout")
+JudgeDeviation::JudgeDeviation()
+: Node("judge_deviation")
 {
   rmw_qos_profile_t qos_sensor = rmw_qos_profile_sensor_data;
   this->sub_image_ = image_transport::create_subscription(
     this, "/camera_linetrace/camera1/image_raw",
-    std::bind(&JudgeCourseout::image_callback, this, std::placeholders::_1), "raw", qos_sensor);
+    std::bind(
+      &JudgeDeviation::onImage, this, std::placeholders::_1),
+    "raw", qos_sensor);
 
-  data_pub_ = this->create_publisher<std_msgs::msg::Bool>("/judge_courseout/data", 10);
+  data_pub_ =
+    this->create_publisher<std_msgs::msg::Bool>("/judge_deviation/data", 10);
 }
 
-void JudgeCourseout::image_callback(const sensor_msgs::msg::Image::ConstSharedPtr & ptr)
+void JudgeDeviation::onImage(
+  const sensor_msgs::msg::Image::ConstSharedPtr & ptr)
 {
   cv_bridge::CvImagePtr cv_ptr;
   std_msgs::msg::Bool msg_data;
@@ -44,7 +48,7 @@ void JudgeCourseout::image_callback(const sensor_msgs::msg::Image::ConstSharedPt
   cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
   // 0 ~ 100 : ok
   // width = 100, height = 1
-  unsigned short int black_count = 0;
+  int black_count = 0;
   for (int i = 0; i < gray.cols; i++) {
     if (gray.at<uchar>(0, i) < 100) {
       black_count++;
@@ -62,7 +66,7 @@ void JudgeCourseout::image_callback(const sensor_msgs::msg::Image::ConstSharedPt
 int main(int argc, char * argv[])
 {
   rclcpp::init(argc, argv);
-  auto node = std::make_shared<JudgeCourseout>();
+  auto node = std::make_shared<JudgeDeviation>();
   rclcpp::spin(node);
   rclcpp::shutdown();
   return 0;

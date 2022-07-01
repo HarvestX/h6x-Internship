@@ -19,22 +19,22 @@ JudgeGoal::JudgeGoal()
 {
   started_ = false;
   goal_ = false;
-  courseout_count_ = 0;
+  this->deviation_count_ = 0;
 
   rclcpp::QoS _qos = rclcpp::SensorDataQoS().reliable();
 
   sub_start_ =
     this->create_subscription<std_msgs::msg::Bool>(
     "/start/touched", _qos,
-    std::bind(&JudgeGoal::start_status_callback, this, std::placeholders::_1));
+    std::bind(&JudgeGoal::onStartStatus, this, std::placeholders::_1));
   sub_goal_ =
     this->create_subscription<std_msgs::msg::Bool>(
     "/goal/touched", _qos,
-    std::bind(&JudgeGoal::goal_status_callback, this, std::placeholders::_1));
+    std::bind(&JudgeGoal::onGoalStatus, this, std::placeholders::_1));
 
-  sub_courseout_ = this->create_subscription<std_msgs::msg::Bool>(
-    "/judge_courseout/data", 10, std::bind(
-      &JudgeGoal::line_courseout_callback, this,
+  this->sub_deviation_ = this->create_subscription<std_msgs::msg::Bool>(
+    "/judge_deviation/data", 10, std::bind(
+      &JudgeGoal::onLineDeviation, this,
       std::placeholders::_1));
 
   // define timer
@@ -44,36 +44,38 @@ JudgeGoal::JudgeGoal()
     std::bind(&JudgeGoal::timer_callback, this));
 
   // define publisher
-  status_pub_ = this->create_publisher<std_msgs::msg::Int32>("/judge_status", 10);
-  courseout_count_pub_ = this->create_publisher<std_msgs::msg::Int32>("/courseout_count", 10);
+  status_pub_ =
+    this->create_publisher<std_msgs::msg::Int32>("/judge_status", 10);
+  deviation_count_pub_ =
+    this->create_publisher<std_msgs::msg::Int32>("/deviation_count", 10);
 }
 
 // データの受信を行うのみ ---------------------------------------------------
-void JudgeGoal::start_status_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+void JudgeGoal::onStartStatus(const std_msgs::msg::Bool::SharedPtr ptr)
 {
   if (ptr->data) {
-    started_ = true;
+    this->started_ = true;
   }
 }
 
-void JudgeGoal::goal_status_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+void JudgeGoal::onGoalStatus(const std_msgs::msg::Bool::SharedPtr ptr)
 {
   // スタート済が前提
-  if (ptr->data && started_) {
-    goal_ = true;
+  if (ptr->data && this->started_) {
+    this->goal_ = true;
   }
 }
 
 // コースアウト時の挙動
-void JudgeGoal::line_courseout_callback(const std_msgs::msg::Bool::SharedPtr ptr)
+void JudgeGoal::onLineDeviation(const std_msgs::msg::Bool::SharedPtr ptr)
 {
   // ゴール済かスタート前は無視
-  if (goal_ || !started_) {
+  if (this->goal_ || !this->started_) {
     return;
   }
 
-  if (ptr->data) {     // courseout
-    courseout_count_++;
+  if (ptr->data) {     // deviation
+    this->deviation_count_++;
   }
 }
 
@@ -82,17 +84,21 @@ void JudgeGoal::line_courseout_callback(const std_msgs::msg::Bool::SharedPtr ptr
 void JudgeGoal::timer_callback()
 {
   std_msgs::msg::Int32 msg_data;
-  std_msgs::msg::Int32 msg_couseout;
+  std_msgs::msg::Int32 msg_deviation;
 
-  if (goal_) {msg_data.data = GOAL;} else if (started_) {msg_data.data = START;} else {
+  if (goal_) {
+    msg_data.data = GOAL;
+  } else if (started_) {
+    msg_data.data = START;
+  } else {
     msg_data.data = READY;
   }
 
   status_pub_->publish(msg_data);
 
-  // courseout
-  msg_couseout.data = courseout_count_;
-  courseout_count_pub_->publish(msg_couseout);
+  // deviation
+  msg_deviation.data = this->deviation_count_;
+  this->deviation_count_pub_->publish(msg_deviation);
 }
 
 

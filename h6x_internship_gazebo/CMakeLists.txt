@@ -22,7 +22,7 @@ ament_auto_add_library(gazebo_ros_target_point SHARED
 # ===================================================================
 
 # executable (judge) ================================================
-ament_auto_add_executable(judge_courceout src/judge/judge_courseout.cpp)
+ament_auto_add_executable(judge_deviation src/judge/judge_deviation.cpp)
 ament_auto_add_executable(game_master src/judge/game_master.cpp)
 ament_auto_add_executable(judge_goal src/judge/judge_goal.cpp)
 # ===================================================================

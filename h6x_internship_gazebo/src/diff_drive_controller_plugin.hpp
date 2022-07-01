@@ -46,9 +46,9 @@ public:
   void Reset() override;
   void OnUpdate();
 
-  void twistCallback(const geometry_msgs::msg::Twist & msg);
+  void onTwist(const geometry_msgs::msg::Twist & msg);
 
-  void sub_speedlimit_callback(const std_msgs::msg::Float32 & msg);
+  void onSpeedLimit(const std_msgs::msg::Float32 & msg);
 
 private:
   gazebo::physics::ModelPtr model_;
@@ -59,8 +59,8 @@ private:
   gazebo_ros::Node::SharedPtr ros_node_;
 
   rclcpp::Subscription<geometry_msgs::msg::Twist>::SharedPtr cmd_vel_sub_;
-  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_speedlimit_;
+  rclcpp::Subscription<std_msgs::msg::Float32>::SharedPtr sub_speed_limit_;
 
   geometry_msgs::msg::Twist last_cmd_vel_;
 };
-} // end namespace gazebo_plugins
+}  // end namespace gazebo_plugins

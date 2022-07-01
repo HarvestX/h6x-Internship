@@ -37,4 +37,4 @@ private:
   std::unique_ptr<GazeboRosTargetPointPrivate> impl_;
 };
 
-}
+}  // namespace goal_plugin
