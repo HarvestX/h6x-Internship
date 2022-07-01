@@ -15,7 +15,6 @@ cd ~/ws_galactic/src
 git clone https://github.com/HarvestX/h6x-Internship.git
 cd ../
 bash src/h6x-Internship/setup.bash
-vcs import src/ < src/h6x-Internship/rvizplugin.repos
 colcon build --symlink-install
 ```
 
