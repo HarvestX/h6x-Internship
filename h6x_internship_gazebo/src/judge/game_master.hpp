@@ -14,6 +14,7 @@
 
 #pragma once
 
+#include <string>
 #include <rclcpp/rclcpp.hpp>
 #include <rcl_interfaces/msg/log.hpp>
 #include <std_msgs/msg/bool.hpp>
@@ -27,26 +28,26 @@ class GameMaster : public rclcpp::Node
 public:
   GameMaster();
 
-  void courseout_count_callback(const std_msgs::msg::Int32::SharedPtr ptr);
-  void status_callback(const std_msgs::msg::Int32::SharedPtr ptr);
+  void onDeviationCount(const std_msgs::msg::Int32::SharedPtr ptr);
+  void onStatus(const std_msgs::msg::Int32::SharedPtr ptr);
 
-  void timer_count_update();
-  void score_update_and_publish();
+  void timerCountUpdate();
+  void scoreUpdateAndPublish();
 
-  void game_master_status();
-  void game_master_time();
-  void game_master_score();
+  void gameMasterStatus();
+  void gameMasterTime();
+  void gameMasterScore();
 
-  void publish_viecle_status();
+  void publishVehicleStatus();
 
 private:
-  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_courseout_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_deviation_;
 
   // 3 state --------------------------------------------------
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_status_;
 
-  // courseout --------------------------------------------------
-  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_courseout_count_;
+  // deviation ------------------------------------------------
+  rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_deviation_count_;
 
   rclcpp::Subscription<std_msgs::msg::Int32>::SharedPtr sub_charge_;
 
@@ -59,23 +60,24 @@ private:
   rclcpp::TimerBase::SharedPtr timer_;
 
   int64_t game_status_;
-  bool gameover_was_sent_;
+  bool game_over_was_sent_;
 
   bool tmp_charge_flag_;
 
-  // courseout --------------------------------------------------
+  // deviation ------------------------------------------------
   int64_t count_;
-  int64_t gameover_socre_;
+  int64_t game_over_score_;
 
-  int64_t tmp_courseout_count_;
-  int64_t courseout_count_;
+  int64_t tmp_deviation_count_;
+  int64_t deviation_count_;
 
   int64_t past_time_;
   int64_t score_;
   int64_t charge_score_;
 
-  int64_t viecle_status_;
-  float speed_limit_;   // for viecle speed limit (normal: 1.0, slow: 0.5, fast: 2.0, stop: 0.0)
+  int64_t vehicle_status_;
+  // for vehicle speed limit (normal: 1.0, slow: 0.5, fast: 2.0, stop: 0.0)
+  float speed_limit_;
 
   std::string prefix_;
 };

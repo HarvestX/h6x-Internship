@@ -29,28 +29,28 @@ public:
   JudgeGoal();
 
   // データの受信を行うのみ ---------------------------------------------------
-  void start_status_callback(const std_msgs::msg::Bool::SharedPtr ptr);
-  void goal_status_callback(const std_msgs::msg::Bool::SharedPtr ptr);
+  void onStartStatus(const std_msgs::msg::Bool::SharedPtr ptr);
+  void onGoalStatus(const std_msgs::msg::Bool::SharedPtr ptr);
 
   // コースアウト時の挙動
-  void line_courseout_callback(const std_msgs::msg::Bool::SharedPtr ptr);
+  void onLineDeviation(const std_msgs::msg::Bool::SharedPtr ptr);
 
   // timer --------------------------------------------------
   void timer_callback();
 
 private:
   rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr status_pub_;
-  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr courseout_count_pub_;
+  rclcpp::Publisher<std_msgs::msg::Int32>::SharedPtr deviation_count_pub_;
 
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_start_;
   rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_goal_;
 
-  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_courseout_;
+  rclcpp::Subscription<std_msgs::msg::Bool>::SharedPtr sub_deviation_;
 
   rclcpp::TimerBase::SharedPtr timer_;
 
   bool started_;
   bool goal_;
 
-  int64_t courseout_count_;
+  int64_t deviation_count_;
 };

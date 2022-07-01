@@ -14,20 +14,21 @@
 
 #pragma once
 
+#include <cv_bridge/cv_bridge.h>
+#include <memory>
 #include <rclcpp/rclcpp.hpp>
 #include <sensor_msgs/msg/image.hpp>
-#include <image_transport/image_transport.h>
+#include <image_transport/image_transport.hpp>
 #include <opencv2/opencv.hpp>
-#include <cv_bridge/cv_bridge.h>
 
 #include <std_msgs/msg/bool.hpp>
 
-class JudgeCourseout : public rclcpp::Node
+class JudgeDeviation : public rclcpp::Node
 {
 public:
-  JudgeCourseout();
+  JudgeDeviation();
 
-  void image_callback(const sensor_msgs::msg::Image::ConstSharedPtr & ptr);
+  void onImage(const sensor_msgs::msg::Image::ConstSharedPtr & ptr);
 
 private:
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr data_pub_;

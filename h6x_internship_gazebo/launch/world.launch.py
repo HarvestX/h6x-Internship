@@ -15,7 +15,6 @@
 
 import os
 
-import paramiko
 
 from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
@@ -61,10 +60,10 @@ def generate_launch_description():
             '-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
     )
 
-    judge_courceout = Node(
+    judge_deviation = Node(
         package='h6x_internship_gazebo',
-        executable='judge_courseout',
-        name='judge_courceout'
+        executable='judge_deviation',
+        name='judge_deviation'
     )
 
     judge_goal = Node(
@@ -87,8 +86,7 @@ def generate_launch_description():
         # gzclient_cmd,
         joint_state_publisher_node,
         rviz,
-
-        judge_courceout,
+        judge_deviation,
         judge_goal,
         game_master,
     ])

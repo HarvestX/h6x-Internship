@@ -18,7 +18,7 @@
 #define START 1
 #define GOAL 2
 
-#define GAMEOVER_SCORE 1000
+#define GAME_OVER_SCORE 1000
 
 #define DEBUG 10
 #define INFO 20
