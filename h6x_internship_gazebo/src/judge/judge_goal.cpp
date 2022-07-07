@@ -14,8 +14,8 @@
 
 #include "judge_goal.hpp"
 
-JudgeGoal::JudgeGoal()
-: Node("judge_goal")
+JudgeGoal::JudgeGoal(const rclcpp::NodeOptions & options)
+: Node("judge_goal", options)
 {
   started_ = false;
   goal_ = false;
@@ -99,14 +99,4 @@ void JudgeGoal::timer_callback()
   // deviation
   msg_deviation.data = this->deviation_count_;
   this->deviation_count_pub_->publish(msg_deviation);
-}
-
-
-int main(int argc, char * argv[])
-{
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<JudgeGoal>();
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  return 0;
 }
