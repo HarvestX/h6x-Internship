@@ -27,3 +27,6 @@ source ~/ws_galactic/install/setup.bash
 ros2 launch h6x_internship_gazebo world.launch.py
 ```
 
+<br>
+
+[チュートリアル](./docs/)
