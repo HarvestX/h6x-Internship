@@ -26,7 +26,7 @@
 class JudgeGoal : public rclcpp::Node
 {
 public:
-  JudgeGoal();
+  explicit JudgeGoal(const rclcpp::NodeOptions &);
 
   // データの受信を行うのみ ---------------------------------------------------
   void onStartStatus(const std_msgs::msg::Bool::SharedPtr ptr);
@@ -54,3 +54,6 @@ private:
 
   int64_t deviation_count_;
 };
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(JudgeGoal)

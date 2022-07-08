@@ -15,8 +15,12 @@
 
 import os
 
+from launch_ros.actions import (
+    Node,
+    ComposableNodeContainer,
+)
+from launch_ros.descriptions import ComposableNode
 
-from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
@@ -60,33 +64,32 @@ def generate_launch_description():
             '-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
     )
 
-    judge_deviation = Node(
-        package='h6x_internship_gazebo',
-        executable='judge_deviation',
-        name='judge_deviation'
-    )
-
-    judge_goal = Node(
-        package='h6x_internship_gazebo',
-        executable='judge_goal',
-        name='judge_goal'
-    )
-
-    game_master = Node(
-        package='h6x_internship_gazebo',
-        executable='game_master',
-        name='game_master',
-        parameters=[
-            {'initial_score': 500},
-        ]
-    )
+    judge = ComposableNodeContainer(
+        name='judge_container',
+        namespace='judge',
+        package='rclcpp_components',
+        executable='component_container',
+        composable_node_descriptions=[
+            ComposableNode(
+                package='h6x_internship_gazebo',
+                plugin='JudgeGoal',
+                name='judge_goal',
+            ),
+            ComposableNode(
+                package='h6x_internship_gazebo',
+                plugin='GameMaster',
+                name='game_master',
+            ),
+            ComposableNode(
+                package='h6x_internship_gazebo',
+                plugin='JudgeDeviation',
+                name='judge_deviation',
+            ),
+        ])
 
     return LaunchDescription([
         gzserver_cmd,
-        # gzclient_cmd,
         joint_state_publisher_node,
         rviz,
-        judge_deviation,
-        judge_goal,
-        game_master,
+        judge
     ])

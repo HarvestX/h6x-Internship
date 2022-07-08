@@ -14,8 +14,8 @@
 
 #include "game_master.hpp"
 
-GameMaster::GameMaster()
-: Node("game_master")
+GameMaster::GameMaster(const rclcpp::NodeOptions & options)
+: Node("game_master", options)
 {
   this->score_ = 0;
   this->past_time_ = 0;
@@ -240,14 +240,4 @@ void GameMaster::gameMasterScore()
 
   _log.msg = _data;
   pub_log_->publish(_log);
-}
-
-// --------------------------------------------------------------------------------------------------------------------
-
-int main(int argc, char ** argv)
-{
-  rclcpp::init(argc, argv);
-  rclcpp::spin(std::make_shared<GameMaster>());
-  rclcpp::shutdown();
-  return 0;
 }

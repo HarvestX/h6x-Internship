@@ -26,7 +26,7 @@
 class JudgeDeviation : public rclcpp::Node
 {
 public:
-  JudgeDeviation();
+  explicit JudgeDeviation(const rclcpp::NodeOptions & options);
 
   void onImage(const sensor_msgs::msg::Image::ConstSharedPtr & ptr);
 
@@ -34,3 +34,6 @@ private:
   rclcpp::Publisher<std_msgs::msg::Bool>::SharedPtr data_pub_;
   image_transport::Subscriber sub_image_;
 };
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(JudgeDeviation)

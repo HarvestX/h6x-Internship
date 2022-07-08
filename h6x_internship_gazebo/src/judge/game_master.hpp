@@ -26,7 +26,7 @@
 class GameMaster : public rclcpp::Node
 {
 public:
-  GameMaster();
+  explicit GameMaster(const rclcpp::NodeOptions &);
 
   void onDeviationCount(const std_msgs::msg::Int32::SharedPtr ptr);
   void onStatus(const std_msgs::msg::Int32::SharedPtr ptr);
@@ -81,3 +81,6 @@ private:
 
   std::string prefix_;
 };
+
+#include "rclcpp_components/register_node_macro.hpp"
+RCLCPP_COMPONENTS_REGISTER_NODE(GameMaster)
