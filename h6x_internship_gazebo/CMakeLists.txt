@@ -21,14 +21,27 @@ ament_auto_add_library(gazebo_ros_target_point SHARED
                        src/gazebo_ros_target_point.cpp)
 # ===================================================================
 
-# executable (judge) ================================================
-ament_auto_add_executable(judge_deviation src/judge/judge_deviation.cpp)
-ament_auto_add_executable(game_master src/judge/game_master.cpp)
-ament_auto_add_library(judge_goal SHARED src/judge/judge_goal.cpp)
+
+set(TARGET judge_deviation)
+ament_auto_add_library(${TARGET} SHARED src/judge/${TARGET}.cpp)
 rclcpp_components_register_node(
-  judge_goal
+  ${TARGET}
+    PLUGIN "JudgeDeviation"
+    EXECUTABLE ${TARGET}_exec)
+
+set(TARGET game_master)
+ament_auto_add_library(${TARGET} SHARED src/judge/${TARGET}.cpp)
+rclcpp_components_register_node(
+  ${TARGET}
+    PLUGIN "GameMaster"
+    EXECUTABLE ${TARGET}_exec)
+
+set(TARGET judge_goal)
+ament_auto_add_library(${TARGET} SHARED src/judge/${TARGET}.cpp)
+rclcpp_components_register_node(
+  ${TARGET}
     PLUGIN "JudgeGoal"
-    EXECUTABLE judge_goal_exec)
+    EXECUTABLE ${TARGET}_exec)
 # ===================================================================
 
 if(BUILD_TESTING)

@@ -64,12 +64,6 @@ def generate_launch_description():
             '-d', os.path.join(pkg_line_trace, 'rviz', 'line_trace.rviz')]
     )
 
-    judge_deviation = Node(
-        package='h6x_internship_gazebo',
-        executable='judge_deviation',
-        name='judge_deviation'
-    )
-
     judge = ComposableNodeContainer(
         name='judge_container',
         namespace='judge',
@@ -81,23 +75,21 @@ def generate_launch_description():
                 plugin='JudgeGoal',
                 name='judge_goal',
             ),
+            ComposableNode(
+                package='h6x_internship_gazebo',
+                plugin='GameMaster',
+                name='game_master',
+            ),
+            ComposableNode(
+                package='h6x_internship_gazebo',
+                plugin='JudgeDeviation',
+                name='judge_deviation',
+            ),
         ])
-
-    game_master = Node(
-        package='h6x_internship_gazebo',
-        executable='game_master',
-        name='game_master',
-        parameters=[
-            {'initial_score': 500},
-        ]
-    )
 
     return LaunchDescription([
         gzserver_cmd,
-        # gzclient_cmd,
         joint_state_publisher_node,
         rviz,
-        judge_deviation,
-        judge,
-        game_master,
+        judge
     ])

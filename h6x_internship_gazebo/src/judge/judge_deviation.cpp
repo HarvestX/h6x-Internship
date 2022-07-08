@@ -14,8 +14,8 @@
 
 #include "judge_deviation.hpp"
 
-JudgeDeviation::JudgeDeviation()
-: Node("judge_deviation")
+JudgeDeviation::JudgeDeviation(const rclcpp::NodeOptions & options)
+: Node("judge_deviation", options)
 {
   rmw_qos_profile_t qos_sensor = rmw_qos_profile_sensor_data;
   this->sub_image_ = image_transport::create_subscription(
@@ -61,13 +61,4 @@ void JudgeDeviation::onImage(
   } else {
     data_pub_->publish(msg_data);
   }
-}
-
-int main(int argc, char * argv[])
-{
-  rclcpp::init(argc, argv);
-  auto node = std::make_shared<JudgeDeviation>();
-  rclcpp::spin(node);
-  rclcpp::shutdown();
-  return 0;
 }
