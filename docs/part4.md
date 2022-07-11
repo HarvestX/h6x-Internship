@@ -423,6 +423,8 @@ ros2 launch lecture string_publisher.launch.py
 
 で実行可能です。
 
+<br>
+
 # ロボットの直進・回転 (Twist)
 
 先程のPublisherの基本プログラムを活用してロボットの直進・回転を行ってみましょう。
