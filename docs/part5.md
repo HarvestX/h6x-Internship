@@ -26,6 +26,7 @@ ament_auto_add_executable(${TARGET} src/${TARGET}.cpp)
 ### laser_subscriber.hpp
 
 ```cpp
+#pragma once
 #include <rclcpp/rclcpp.hpp>
 
 // Include the header of the message type you want to publish.
@@ -34,25 +35,25 @@ ament_auto_add_executable(${TARGET} src/${TARGET}.cpp)
 
 #include <chrono>
 
-class LaserSubscriber: public rclcpp::Node
+class LaserSubscriber : public rclcpp::Node
 {
-    public:
-        // Initialize this class.
-        LaserSubscriber(
-					const std::string name, const rclcpp::NodeOptions & options);
+public:
+    // Initialize this class.
+    LaserSubscriber(
+        const std::string name, const rclcpp::NodeOptions &options);
 
-    private:// Publish number function (method).
-        void publishTwist();
-        void onLaser(const sensor_msgs::msg::LaserScan::SharedPtr msg);
+private: // Publish number function (method).
+    void publishTwist();
+    void onLaser(const sensor_msgs::msg::LaserScan::SharedPtr msg);
 
-        // Publisher definition.
-        rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
-        rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_laser_;
-        // Timer definition.
-        rclcpp::TimerBase::SharedPtr timer_;
+    // Publisher definition.
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
+    rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr sub_laser_;
+    // Timer definition.
+    rclcpp::TimerBase::SharedPtr timer_;
 
-        float range_;
-	};
+    float range_;
+};
 ```
 
 ### laser_subscriber.cpp
@@ -98,22 +99,8 @@ void LaserSubscriber::publishTwist()
     _msg.linear.x = 0.1;
     _msg.angular.z = -0.0;
     // show range
-    std::cout << "range: " << range << std::endl;
-    if (range < 0.5)
-    {
-        _msg.linear.x = -0.1;
-        _msg.angular.z = 0.0;
-    }
-    else if (range > 0.6)
-    {
-        _msg.linear.x = 0.1;
-        _msg.angular.z = 0.0;
-    }
-    else
-    {
-        _msg.linear.x = 0.0;
-        _msg.angular.z = 0.0;
-    }
+    std::cout << "range: " << this->range_ << std::endl;
+
     // Publish the message.
     pub_twist_->publish(_msg);
 }
@@ -144,7 +131,7 @@ LaserSubscriber::LaserSubscriber(
 
     // Create a timer. Call "publish_twist" method when timer is triggered.
     this->timer_ =
-			this->create_wall_timer(period, std::bind(&pub_twist::publishTwist, this));
+			this->create_wall_timer(period, std::bind(&LaserSubscriber::publishTwist, this));
 
     // best effort, keep last
     auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).best_effort();
@@ -208,6 +195,7 @@ def generate_launch_description():
     sub_laser = Node(
         package='lecture',
         executable='laser_subscriber',
+        output='screen',
     )
 
     return LaunchDescription([
@@ -227,9 +215,14 @@ source ~/ws_galactic/install/setup.bash
 ros2 launch lecture lecture_laser_twist.launch.py
 ```
 
-## 課題
+## 📝課題
 
-## 参考資料（URL）
+ - `lecture_laser_twist`では、ロボットが発進したまま止まりません。 `publishTwist()`を適切に書き換えて止まるようにしましょう。
+
+- 仮にロボットが規定の距離よりも近い位置にあった場合に後退するように挙動を調整しましょう。
+
+
+## 📖参考資料（URL）
 
 [RELIABILITY QosPolicy](https://community.rti.com/static/documentation/connext-dds/5.2.0/doc/manuals/connext_dds/html_files/RTI_ConnextDDS_CoreLibraries_UsersManual/Content/UsersManual/RELIABILITY_QosPolicy.htm)
 

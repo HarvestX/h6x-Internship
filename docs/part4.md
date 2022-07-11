@@ -111,9 +111,14 @@ lecture(dir)
 
 ## ソースコードの追加
 
-### StringPublisher.hpp
+### string_publisher.hpp
 
 ROS2の基礎的な定義を記述します。コンストラクタ `StringPublisher` はコンストラクタ（クラスを実体化させるときに実行される）、メンバ関数 `publish_string`は1秒ごとに値を送信するメソッドです。
+
+```bash
+# ファイルのオープン
+code ~/ws_galactic/src/lecture/include/lecture/string_publisher.hpp
+```
 
 ### ファイル中の`::SharedPtr` とは？
 
@@ -125,6 +130,7 @@ ROS2の基礎的な定義を記述します。コンストラクタ `StringPubli
 - メモリの開放忘れは、メモリリーク（使われていないのに使えないメモリ領域）という不具合を起こす原因になり、動作不能に陥る原因となります。
 
 ```cpp
+#pragma once
 #include <rclcpp/rclcpp.hpp>
 
 // Include the header of the message type you want to publish.
@@ -153,6 +159,11 @@ class StringPublisher: public rclcpp::Node
 ### string_publisher.cpp
 
 先程定義した `string_publisher.hpp` の中を記述します。実行時は、 `main` → `StringPublisher` の生成→ `publish_string` (1秒おき)の順で実行されます。
+
+```bash
+# ファイルのオープン
+code ~/ws_galactic/src/lecture/src/string_publisher.cpp
+```
 
 ```cpp
 #include "lecture/string_publisher.hpp"
@@ -226,6 +237,11 @@ package.xmlには、初めてパッケージを見た人がどのような機能
 - dependタグ： `rclcpp` や `std_msgs` などのROSなどの依存ライブラリを記述。
     - 今回のように`ament_cmake_auto` を使用する場合、dependが不足するとパッケージを見つけられずにエラーが発生します。
 
+```bash
+# ファイルのオープン
+code ~/ws_galactic/src/lecture/package.xml
+```
+
 ```xml
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
@@ -262,7 +278,12 @@ C++プログラムをコンパイルするときは次の通り記述してい�
 ament_auto_add_executable(実行名 コンパイル対象ファイル1　コンパイル対象ファイル2 ...)
 ```
 
-以下のCMakeLists.txtを示します。
+以下にCMakeLists.txtを示します。
+
+```bash
+# ファイルのオープン
+code ~/ws_galactic/src/lecture/CMakeLists.txt
+```
 
 ```makefile
 cmake_minimum_required(VERSION 3.8)
@@ -298,8 +319,8 @@ ament_auto_package(INSTALL_TO_SHARE launch)
 cd ~/ws_galactic/
 colcon build --symlink-install
 # 以下はビルド中のログ
-# Starting >>> lecture 
-# Finished <<< lecture [3.17s]                     
+# Starting >>> lecture
+# Finished <<< lecture [3.17s]
 
 # Summary: 1 package finished [3.26s]
 ```
@@ -373,6 +394,11 @@ Nodeの中には次の項目を入れます。
 定義されたNodeを `launch.LaunchDescription` の引数に与えることで同時実行が可能です。
 
 ノードは同じ中身でも実行時の名前が異なれば、別々のノードとして存在することが可能です。同一プログラムの別名の複数実行（カメラの前方後方など）が可能です。
+
+```bash
+# ファイルのオープン
+code ~/ws_galactic/src/lecture/launch/string_publisher.launch.py
+```
 
 ```python
 import launch
@@ -501,7 +527,7 @@ Twistメッセージは次のデータを持っています。
     - x  (float64型)
     - y  (float64型)
     - z  (float64型)
-    
+
 
 直進方向のyのデータに変数を代入する場合は、 `_msg.linear.y = 1.0;` とします。
 
@@ -543,6 +569,7 @@ C++ファイル
 ⚠️`string_publisher.hpp`と同じディレクトリに`twist_publisher.hpp`を置きます。
 
 ```cpp
+#pragma once
 #include <rclcpp/rclcpp.hpp>
 
 // Include the header of the message type you want to publish.
