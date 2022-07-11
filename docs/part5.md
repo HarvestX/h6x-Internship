@@ -124,7 +124,7 @@ LaserSubscriber::LaserSubscriber(
     // - "geometry_msgs::msg::Twist" is the message type.
     // - "cmd_vel" is the name of publisher.
     this->pub_twist_ =
-			this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
+		this->create_publisher<geometry_msgs::msg::Twist>("cmd_vel", 10);
 
     // Create a timer definition. Interval is 1 second (= 1000ms).
     std::chrono::milliseconds period(timer_ms);
@@ -136,10 +136,10 @@ LaserSubscriber::LaserSubscriber(
     // best effort, keep last
     auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).best_effort();
     this->sub_laser_ =
-			this->create_subscription<sensor_msgs::msg::LaserScan>(
-				"ray/laserscan",
-				qos,
-				std::bind(&LaserSubscriber::onLaser, this, std::placeholders::_1));
+        this->create_subscription<sensor_msgs::msg::LaserScan>(
+			"ray/laserscan",
+			qos,
+			std::bind(&LaserSubscriber::onLaser, this, std::placeholders::_1));
 }
 // Entry point of this node.
 int main(int argc, char **argv)

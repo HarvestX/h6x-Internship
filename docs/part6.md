@@ -29,20 +29,20 @@ ImageView::ImageView(const std::string name, const rclcpp::NodeOptions &options)
 {
     // best effort, keep last
     auto qos = rclcpp::QoS(rclcpp::KeepLast(1)).best_effort();
-		// 受信側の設定
+	// 受信側の設定
     this->sub_image_=
-			this->create_subscription<sensor_msgs::msg::Image>(
-				"camera_linetrace/camera1/image_raw",
-				qos,
-				std::bind(&sub_image::subscribe_image, this, std::placeholders::_1));
+		this->create_subscription<sensor_msgs::msg::Image>(
+			"camera_linetrace/camera1/image_raw",
+			qos,
+			std::bind(&sub_image::subscribe_image, this, std::placeholders::_1));
 }
 
 void ImageView::onImage(const sensor_msgs::msg::Image::SharedPtr msg)
 {
     // Convert the message to OpenCV format.
     auto bridge_cpy = cv_bridge::toCvCopy(msg, "bgr8");
-    
-		// 画像の表示（分かりやすいように拡大）
+
+	// 画像の表示（分かりやすいように拡大）
     cv::resize(bridge_cpy->image, bridge_cpy->image, cv::Size(), 5, 30);
     cv::imshow("image", bridge_cpy->image);
     cv::waitKey(1);
@@ -67,6 +67,7 @@ int main(int argc, char *argv[])
 `include/lecture` に新規作成
 
 ```cpp
+#pragma once
 #include <rclcpp/rclcpp.hpp>
 
 #include <sensor_msgs/msg/image.hpp>
@@ -76,14 +77,14 @@ int main(int argc, char *argv[])
 
 class ImageView: public rclcpp::Node
 {
-    public:
-        // Initialize this class.
-        ImageView(const std::string name, const rclcpp::NodeOptions & options);
+public:
+    // Initialize this class.
+    ImageView(const std::string name, const rclcpp::NodeOptions & options);
 
-    private:// Publish number function (method).
-        void onImage(const sensor_msgs::msg::Image::SharedPtr msg);
+private:// Publish number function (method).
+    void onImage(const sensor_msgs::msg::Image::SharedPtr msg);
 
-        rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_image_;
+    rclcpp::Subscription<sensor_msgs::msg::Image>::SharedPtr sub_image_;
 };
 ```
 

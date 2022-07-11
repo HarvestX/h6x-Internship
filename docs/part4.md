@@ -140,19 +140,19 @@ code ~/ws_galactic/src/lecture/include/lecture/string_publisher.hpp
 
 class StringPublisher: public rclcpp::Node
 {
-    public:
-        // Initialize this class.
-        StringPublisher(const std::string name, const rclcpp::NodeOptions & options);
+public:
+    // Initialize this class.
+    StringPublisher(const std::string name, const rclcpp::NodeOptions & options);
 
-    private:// Publish number function (method).
-        void publishString();
+private:// Publish number function (method).
+    void publishString();
 
-        // Publisher definition.
-        rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_string_;
-        // Timer definition.
-        rclcpp::TimerBase::SharedPtr timer_;
+    // Publisher definition.
+    rclcpp::Publisher<std_msgs::msg::String>::SharedPtr pub_string_;
+    // Timer definition.
+    rclcpp::TimerBase::SharedPtr timer_;
 
-        int64_t counter_;
+    int64_t counter_;
 };
 ```
 
@@ -539,7 +539,7 @@ _msg.linear.y = 1.0;
 ```
 
 > 実際に実装する際は、どの軸がどの方向になっているかを確認する必要があり、それがずれている場合もあります。（例：RealSense T265のodomやUnityの座標軸など）
-> 
+>
 
 次は、C++からTwistメッセージの送信プログラムを作っていきます。
 
@@ -581,18 +581,18 @@ C++ファイル
 
 class TwistPublisher: public rclcpp::Node
 {
-    public:
-        // Initialize this class.
-        TwistPublisher(const std::string name, const rclcpp::NodeOptions & options);
+public:
+    // Initialize this class.
+    TwistPublisher(const std::string name, const rclcpp::NodeOptions & options);
 
-    private:// Publish number function (method).
-        void publishTwist();
-        void subscribeLaser();
+private:// Publish number function (method).
+    void publishTwist();
+    void subscribeLaser();
 
-        // Publisher definition.
-        rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
-        // Timer definition.
-        rclcpp::TimerBase::SharedPtr timer_;
+    // Publisher definition.
+    rclcpp::Publisher<geometry_msgs::msg::Twist>::SharedPtr pub_twist_;
+    // Timer definition.
+    rclcpp::TimerBase::SharedPtr timer_;
 };
 ```
 
