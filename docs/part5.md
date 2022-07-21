@@ -1,10 +1,16 @@
-# 5. Sub（Range受信・C++）→4番の箱で停止
+# 5. Sub（Range受信・C++）
 
 前節では、直進・回転動作を行いましたが、ここでは、距離に応じて挙動を変化させてみましょう。
 
 ここでは距離センサを用いて物体の距離を取得します。
 
 ![gazebo-data640.gif](./images/image5/gazebo-data640.gif)
+
+<br>
+
+ロボットをGazebo GUI上で動かす場合は[Gazeboの使い方](./gazebo_tutorial.md)の使い方も確認してください。
+
+<br>
 
 ### package.xml
 

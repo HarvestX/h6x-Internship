@@ -34,7 +34,7 @@ ImageView::ImageView(const std::string name, const rclcpp::NodeOptions &options)
 		this->create_subscription<sensor_msgs::msg::Image>(
 			"camera_linetrace/camera1/image_raw",
 			qos,
-			std::bind(&sub_image::subscribe_image, this, std::placeholders::_1));
+			std::bind(&ImageView::onImage, this, std::placeholders::_1));
 }
 
 void ImageView::onImage(const sensor_msgs::msg::Image::SharedPtr msg)
@@ -122,11 +122,11 @@ ros2 run lecture image_view
 
 画像を受け取ってターミナルに `0000100000` という感じで受け取るプログラムを以下に示します。
 
-（cv_bridgeで `_image` に変換後）
+（cv_bridgeで `bridge_cpy->image` に変換後）
 
 ```cpp
-		cv::Mat gray_image = cv::Mat::zeros(_image.size(), CV_8UC1);
-		cv::cvtColor(_image, gray_image, cv::COLOR_BGR2GRAY);
+		cv::Mat gray_image = cv::Mat::zeros(bridge_cpy->image.size(), CV_8UC1);
+		cv::cvtColor(bridge_cpy->image, gray_image, cv::COLOR_BGR2GRAY);
 
     std::string line_info = "";
 
