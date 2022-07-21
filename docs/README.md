@@ -15,7 +15,7 @@ ROS2の基本を理解し、データの送受信・およびそのデータの�
 3. [Publisher部の書き方](./part4.md)
 4. [Subscriber部の書き方](./part5.md)
 5. [画像のSubscribeと画像処理](./part6.md)
-6. ROS2の主なツール
+6. [GazeboのGUIの使い方](./gazebo_tutorial.md)
 
 ## 対象者
 

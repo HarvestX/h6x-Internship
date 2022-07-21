@@ -443,7 +443,7 @@ code ~/ws_galactic/src/lecture/launch/lecture_world.launch.py
 内容を次に示します。このlaunchファイルでは、launchファイルからlaunchファイルを立ち上げています。 `IncludeLaunchDescription` で使用するlaunch (python) を宣言することができます。
 
 - `gzserver.lauch.py` は、Gazeboワールドを立ち上げるプログラムです。描画は行わず、シミュレートのみが実行されます。
-- `gzclient.launch.py` は、Gazeboワールドをレンダリングして表示するプログラムです。使用しない場合は描画されないため、リソースが厳しい場合に無効にするとレンダリング分だけ軽量になります。
+- `gzclient.launch.py` は、Gazeboワールドをレンダリングして表示するプログラムです。使用しない場合は描画されないだけでシミュレーションは通常通り動くため、リソースが厳しい場合に実行しないことをお勧めします。（gzclient_cmdをコメントアウトするだけです）
 
 ```python
 import os
