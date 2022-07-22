@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 4. Pub（Twist送信・C++）→任意の方向に移動する
 
 前節で解説した通り、ROSはPub-Subの通信をマルチキャスト通信を行います。ここでは、送信側について解説していきたいと思います。
