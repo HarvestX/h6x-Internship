@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # フィールド・スコアについて
 
 ## 目次
@@ -25,7 +27,7 @@
 - 前方カメラ
     - 640x360のImageデータ（/camera_front/camera_front/image_raw）を送信します。
 
-![Screenshot from 2022-06-22 17-56-55.png](4%20Pub%EF%BC%88Twist%E9%80%81%E4%BF%A1%E3%83%BBC++%EF%BC%89%E2%86%92%E4%BB%BB%E6%84%8F%E3%81%AE%E6%96%B9%E5%90%91%E3%81%AB%E7%A7%BB%E5%8B%95%E3%81%99%E3%82%8B%20c38253adad134812b396ec0cafabd6c0/Screenshot_from_2022-06-22_17-56-55.png)
+![robot_draft](./images/score/robot_draft.png)
 
 ## フィールドについて
 
@@ -56,13 +58,11 @@
 mkdir -p ~/ws_galactic/src
 source /opt/ros/galactic/setup.bash
 cd ~/ws_galactic/src
-git clone git@github.com:HarvestX/h6x-Internship.git
-# git clone https://github.com/HarvestX/h6x-Internship.git
+git clone https://github.com/HarvestX/h6x-Internship.git
 
 # ビルド
 cd ../
 bash src/h6x-Internship/setup.bash
-vcs import src/ < src/h6x-Internship/rvizplugin.repos
 colcon build --symlink-install
 ```
 
