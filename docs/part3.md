@@ -79,12 +79,11 @@ h6x-internshipはライントレースと距離測定、画像処理可能なロ
 mkdir -p ~/ws_galactic/src
 source /opt/ros/galactic/setup.bash
 cd ~/ws_galactic/src
-# git clone https://github.com/HarvestX/h6x-Internship.git
-git clone git@github.com:HarvestX/h6x-Internship.git
+git clone https://github.com/HarvestX/h6x-Internship.git
+
 
 cd ../
 bash src/h6x-Internship/setup.bash
-vcs import src/ < src/h6x-Internship/rvizplugin.repos
 colcon build --symlink-install
 ```
 
