@@ -1,4 +1,7 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # h6x-Internship
+HarvestX Internship materials
 
 ---
 
