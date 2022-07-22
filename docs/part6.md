@@ -165,4 +165,6 @@ ros2 run lecture image_view
 
 [前へ](./part5.md)
 
+[次へ](./score.md)
+
 [目次へ](./README.md)
