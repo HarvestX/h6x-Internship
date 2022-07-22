@@ -1,32 +1,48 @@
 # h6x-Internship
 
-- gazebo 9+ (Tested on 11)
-- ros2-galactic
+---
 
-<br>
+## Requirements
+- Linux OS
+  - [Ubuntu 20.04](https://releases.ubuntu.com/20.04/)
+- ROS 2
+  - [Galactic Geochelone](https://index.ros.org/doc/ros2/Installation/Galactic/)
+- Gazebo 11
+---
 
-## ビルド
-
-
+## Install
+### Locate package in workspace
 ```bash
 mkdir -p ~/ws_galactic/src
-source /opt/ros/galactic/setup.bash
 cd ~/ws_galactic/src
-git clone https://github.com/HarvestX/h6x-Internship.git
-cd ../
-bash src/h6x-Internship/setup.bash
-colcon build --symlink-install
+git clone git@github.com:HarvestX/h6x-Internship.git
 ```
 
-<br>
-
-## 実行方法
-
+### Run script to install dependencies
 ```bash
-source ~/ws_galactic/install/setup.bash
+source /opt/ros/galactic/setup.bash
+cd ~/galactic_ws/src/h6x-Internship
+./setup.bash
+exec -l $SHELL
+```
+
+### Build Source
+Open new terminal and type followings.
+```bash
+source /opt/ros/galactic/setup.bash
+cd ~/galactic_ws
+colcon build
+```
+
+---
+
+## Usage
+- Display each system
+```bash
 ros2 launch h6x_internship_gazebo world.launch.py
 ```
 
-<br>
+---
+
 
 [チュートリアル](./docs/)
