@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 2. ROSとは（Rviz・Gazeboツールの解説込み）
 
 ここでは、「ROS2」というツールがなぜ存在するのか、Gazeboとは何かについて解説します。
