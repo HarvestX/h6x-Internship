@@ -41,7 +41,7 @@ ros2 launch demo_nodes_cpp talker_listener.launch.py
 
 ![pub-sub.png](./images/image3/pub-sub.png)
 
-Pub-Subが通信成立していれば、「’Hello World: 数字’」がtalker、listenerからそれぞれ1回ずつ出力されます。
+Pub-Subが通信成立していれば、「`Hello World: 数字`」がtalker、listenerからそれぞれ1回ずつ出力されます。
 
 通信をしているかどうかが分からないときは、 `rqt_graph` を使います。rqt_graphは、ノード間の通信を可視化することができるGUIツールです。
 
