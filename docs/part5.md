@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 5. Sub（Range受信・C++）
 
 前節では、直進・回転動作を行いましたが、ここでは、距離に応じて挙動を変化させてみましょう。
