@@ -1,7 +1,9 @@
 <img src="https://harvestx.jp/img/logo-red.svg" width="30%">
 
 # h6x-Internship
-HarvestX Internship materials
+HarvestX Internship contens.
+
+[Start from here](./docs).
 
 ---
 
@@ -11,6 +13,7 @@ HarvestX Internship materials
 - ROS 2
   - [Galactic Geochelone](https://index.ros.org/doc/ros2/Installation/Galactic/)
 - Gazebo 11
+
 ---
 
 ## Install
@@ -47,5 +50,3 @@ ros2 launch h6x_internship_gazebo world.launch.py
 
 ---
 
-
-[チュートリアル](./docs/)
