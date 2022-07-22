@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 1. 目的・扱う内容
 
 本教材では、ライントレース環境を再現するGazeboシミュレータを使用したROSの入門用教材です。
@@ -23,6 +25,9 @@ C++によるプログラミング経験があることを前提とします。
 
 ただし、CMakeLists.txtなどのROS2も絡む内容があるため、手順通りに進めれば問題ないように資料は記述していきます。
 
+
+## 本書に関する誤植を見つけた際
+内容を一通り確認したのち資料を作成しておりますが，万が一誤植があれば[Issue](https://github.com/HarvestX/h6x-Internship/issues)を発行していただけますと幸いです。
 
 <br>
 
