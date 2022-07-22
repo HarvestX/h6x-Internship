@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 3. 環境構築とプログラムの動作確認
 
 ## 概要
