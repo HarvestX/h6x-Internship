@@ -52,26 +52,10 @@
     - 10% : D+
     - 0%以上 : D
 
-## ビルド（Galactic）
+## 📝課題
+スタート位置からゴールを目指して車輪ロボットを制御しましょう．
+完了したらスコアを報告してください．
 
-```bash
-mkdir -p ~/ws_galactic/src
-source /opt/ros/galactic/setup.bash
-cd ~/ws_galactic/src
-git clone https://github.com/HarvestX/h6x-Internship.git
-
-# ビルド
-cd ../
-bash src/h6x-Internship/setup.bash
-colcon build --symlink-install
-```
-
-## ワールドの実行
-
-```bash
-source ~/ws_galactic/install/setup.bash
-ros2 launch h6x_internship_gazebo world.launch.py
-```
 
 ## 追加予定（未定）
 
