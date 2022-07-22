@@ -11,13 +11,15 @@ ROS2を使用してライントレースや障害物検出などのタスクを�
 ROS2の基本を理解し、データの送受信・およびそのデータの処理を記述できるようになる。
 
 ## 講習内容
+1. [目的・扱う内容](./README.md)
+2. [ROS2の概要](./part2.md)
+3. [環境構築と動作確認](./part3.md)
+4. [Publisher部の書き方](./part4.md)
+5. [Subscriber部の書き方](./part5.md)
+6. [画像のSubscribeと画像処理](./part6.md)
+8. [フィールド・スコアについて](./score.md)
+7. [GazeboのGUIの使い方](./gazebo_tutorial.md)
 
-1. [ROS2の概要](./part2.md)
-2. [環境構築と動作確認](./part3.md)
-3. [Publisher部の書き方](./part4.md)
-4. [Subscriber部の書き方](./part5.md)
-5. [画像のSubscribeと画像処理](./part6.md)
-6. [GazeboのGUIの使い方](./gazebo_tutorial.md)
 
 ## 対象者
 
