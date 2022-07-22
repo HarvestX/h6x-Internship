@@ -5,6 +5,8 @@ HarvestX Internship contens.
 
 [Start from here](./docs).
 
+![](./docs/images/score/gazebo-sim.png)
+
 ---
 
 ## Requirements
