@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # 6. ライントレース（画像処理）
 
 次は、画像処理を使用してデータの取得を行いましょう。
