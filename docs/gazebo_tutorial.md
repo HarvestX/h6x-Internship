@@ -1,3 +1,5 @@
+<img src="https://harvestx.jp/img/logo-red.svg" width="30%">
+
 # Gazeboの使い方
 
 Gazeboは、ROSに対応したシミュレータです。launchで実行することがほとんどですが、スタンドアロンでも実行可能です。
