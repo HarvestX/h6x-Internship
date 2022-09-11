@@ -88,6 +88,7 @@ def generate_launch_description():
         ])
 
     return LaunchDescription([
+        gzclient_cmd,
         gzserver_cmd,
         joint_state_publisher_node,
         rviz,

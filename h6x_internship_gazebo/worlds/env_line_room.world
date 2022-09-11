@@ -5251,53 +5251,6 @@
       </link>
       <pose>0.856303 0.898359 0 0 -0 0</pose>
     </model>
-    <model name='line_flooring'>
-      <link name='link'>
-        <collision name='collision'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>5 5</size>
-            </plane>
-          </geometry>
-          <surface>
-            <friction>
-              <ode>
-                <mu>100</mu>
-                <mu2>50</mu2>
-              </ode>
-              <torsional>
-                <ode/>
-              </torsional>
-            </friction>
-            <contact>
-              <ode/>
-            </contact>
-            <bounce/>
-          </surface>
-          <max_contacts>10</max_contacts>
-        </collision>
-        <visual name='visual'>
-          <geometry>
-            <plane>
-              <normal>0 0 1</normal>
-              <size>5 5</size>
-            </plane>
-          </geometry>
-          <material>
-            <script>
-              <uri>model://env_line_flooring/materials/test_texture.material</uri>
-              <name>LineFlooringTexture</name>
-            </script>
-          </material>
-        </visual>
-        <self_collide>0</self_collide>
-        <enable_wind>0</enable_wind>
-        <kinematic>0</kinematic>
-      </link>
-      <pose>0 0 0.001 0 -0 0</pose>
-      <static>1</static>
-    </model>
     <model name='env_harvestx'>
       <static>1</static>
       <link name='link'>
