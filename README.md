@@ -29,7 +29,7 @@ git clone git@github.com:HarvestX/h6x-Internship.git
 ### Run script to install dependencies
 ```bash
 source /opt/ros/galactic/setup.bash
-cd ~/galactic_ws/src/h6x-Internship
+cd ~/ws_galactic/src/h6x-Internship
 ./setup.bash
 exec -l $SHELL
 ```
@@ -38,7 +38,7 @@ exec -l $SHELL
 Open new terminal and type followings.
 ```bash
 source /opt/ros/galactic/setup.bash
-cd ~/galactic_ws
+cd ~/ws_galactic
 colcon build
 ```
 
